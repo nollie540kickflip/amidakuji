@@ -1,0 +1,8 @@
+{
+  "runtime": "static",
+  "platformVersion": 15,
+  "entry": "index.html",
+  "name": "休日出勤あみだくじ",
+  "slug": "xiu-ri-chu-qin-amidakuzi",
+  "managedCronJobs": []
+}

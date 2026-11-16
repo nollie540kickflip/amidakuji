@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>休日出勤あみだくじ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#f3f5f7;
+--surface:#ffffff;
+--surface-2:#eef1f4;
+--ink:#172233;
+--ink-2:#4b5a6e;
+--ink-3:#59677a;
+--line:#dde3ea;
+--navy:#1d3557;
+--navy-2:#274b78;
+--accent:#e4572e;
+--accent-ink:#c7431f;
+--accent-soft:#fff0e9;
+--teal:#0e7a6d;
+--teal-soft:#e6f4f1;
+--amber:#b7791f;
+--radius:18px;
+--shadow:0 10px 30px rgba(23,34,51,.08), 0 2px 6px rgba(23,34,51,.06);
+}
+@media (prefers-color-scheme: dark){
+:root{
+--bg:#0f1622;
+--surface:#182335;
+--surface-2:#1f2e46;
+--ink:#eef2f7;
+--ink-2:#b8c4d4;
+--ink-3:#9aabc2;
+--line:#2c3d57;
+--navy:#7aa7dd;
+--navy-2:#9dbfe8;
+--accent:#ff7a4d;
+--accent-ink:#ffa07e;
+--accent-soft:#3a241c;
+--teal:#3ec9b6;
+--teal-soft:#173832;
+--shadow:0 10px 30px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.3);
+}
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;overflow-x:hidden}
+body{
+font-family:"Noto Sans JP", "Hiragino Kaku Gothic ProN", system-ui, sans-serif;
+background:var(--bg);
+color:var(--ink);
+line-height:1.6;
+-webkit-font-smoothing:antialiased;
+}
+.wrap{width:100%;max-width:980px;margin:0 auto;padding:28px 18px 64px}
+@media (max-width:480px){
+.wrap{padding:20px 10px 48px}
+.panel{padding:16px 14px}
+}
+
+/* Header */
+.hero{margin:6px 0 22px}
+.hero-top{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.calendar-badge{
+flex:0 0 auto;width:64px;height:64px;border-radius:14px;background:var(--navy);
+color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;
+box-shadow:var(--shadow);overflow:hidden;position:relative;
+}
+@media (prefers-color-scheme: dark){.calendar-badge{background:var(--surface-2);color:var(--ink)}}
+.calendar-badge::before{content:"";position:absolute;top:0;left:0;right:0;height:18px;background:var(--accent)}
+.calendar-badge .dow{font-size:9px;font-weight:700;letter-spacing:.03em;margin-top:17px;line-height:1;white-space:nowrap}
+.calendar-badge .dnum{font-family:"Zen Maru Gothic",sans-serif;font-size:22px;font-weight:900;line-height:1.1}
+h1{
+font-family:"Zen Maru Gothic","Noto Sans JP",sans-serif;
+font-size:clamp(28px,5vw,40px);font-weight:900;letter-spacing:.02em;margin:2px 0 6px;line-height:1.25;
+}
+.hero p{margin:0;color:var(--ink-2);font-size:15px;max-width:640px}
+.hero p strong{color:var(--accent-ink)}
+
+/* Panels */
+.panel{
+background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+box-shadow:var(--shadow);padding:22px;margin-bottom:18px;
+}
+.panel h2{
+font-size:17px;font-weight:900;margin:0 0 4px;display:flex;align-items:center;gap:10px;
+}
+.step-num{
+display:inline-flex;align-items:center;justify-content:center;
+width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;
+font-size:13px;font-weight:900;flex:0 0 auto;
+}
+@media (prefers-color-scheme: dark){.step-num{background:var(--accent);color:#1a120c}}
+.hint{color:var(--ink-3);font-size:13px;margin:4px 0 14px}
+
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.settings-grid>*{min-width:0}
+@media (max-width:720px){.settings-grid{grid-template-columns:1fr}}
+
+.field-list{display:flex;flex-direction:column;gap:8px}
+.field-row{display:flex;align-items:center;gap:8px;width:100%;min-width:0}
+.field-row .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+.field-row input{
+flex:1 1 0%;min-width:0;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;
+background:var(--surface);color:var(--ink);font:inherit;font-size:15px;font-weight:500;
+}
+.field-row input:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(39,75,120,.15)}
+.field-row input:disabled,.field-row select:disabled{opacity:.55}
+.field-row select{
+flex:1 1 0%;min-width:0;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;
+background:var(--surface);color:var(--ink);font:inherit;font-size:15px;font-weight:500;
+}
+.remove-btn{
+flex:0 0 auto;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);
+background:var(--surface-2);color:var(--ink-2);font-size:16px;cursor:pointer;line-height:1;
+}
+.remove-btn:hover{color:var(--accent-ink);border-color:var(--accent)}
+.remove-btn:disabled{opacity:.35;cursor:not-allowed}
+.dup-warn{color:var(--accent-ink);font-size:13px;font-weight:700;margin:10px 0 0}
+
+.btn{
+display:inline-flex;align-items:center;gap:7px;
+padding:10px 16px;border-radius:999px;border:1.5px solid var(--line);
+background:var(--surface);color:var(--ink);font:inherit;font-size:14px;font-weight:700;
+cursor:pointer;transition:transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.btn:hover{border-color:var(--navy-2)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.btn.navy{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn.navy:hover{background:var(--navy-2);border-color:var(--navy-2)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn.small{padding:7px 13px;font-size:13px;margin-top:12px}
+
+.duty-control{
+display:flex;align-items:center;gap:12px;background:var(--accent-soft);
+border-radius:12px;padding:10px 14px;margin-bottom:12px;flex-wrap:wrap;
+}
+.duty-control .label{font-size:13px;font-weight:700;color:var(--accent-ink)}
+.stepper{display:flex;align-items:center;gap:10px;margin-left:auto}
+.stepper button{
+width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);
+background:var(--surface);color:var(--accent-ink);font-size:17px;font-weight:900;cursor:pointer;line-height:1;
+}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.stepper .val{font-size:19px;font-weight:900;min-width:52px;text-align:center}
+.stepper .val small{font-size:12px;font-weight:700;color:var(--ink-2)}
+
+/* Ladder */
+.ladder-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.ladder-scroll{margin-top:8px;max-width:100%;overflow:hidden}
+.ladder-box{
+display:block;width:100%;
+background:
+radial-gradient(circle, var(--line) 1px, transparent 1px);
+background-size:22px 22px;
+background-color:var(--surface-2);
+border-radius:14px;padding:10px 6px 4px;
+}
+@media (prefers-color-scheme: dark){.ladder-box{background-color:#141f31}}
+svg.ladder{width:100%;max-width:100%;height:auto;display:block}
+.top-pill{cursor:pointer}
+.top-pill rect{transition:filter .15s ease, opacity .15s ease}
+.top-pill:hover rect{filter:brightness(1.12)}
+.top-pill:focus{outline:none}
+.top-pill:focus-visible rect{stroke:var(--ink);stroke-width:3px}
+.top-pill text{pointer-events:none}
+.top-pill.done{cursor:default;opacity:.55}
+.bottom-pill text{font-weight:700}
+.bottom-pill.winner rect{stroke-width:3}
+
+.status-line{
+min-height:28px;margin-top:14px;font-size:14px;font-weight:700;color:var(--ink-2);
+display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.status-line .pulse{
+width:9px;height:9px;border-radius:50%;background:var(--accent);flex:0 0 auto;
+animation:pulse 1s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+@media (prefers-reduced-motion: reduce){
+.status-line .pulse{animation:none}
+*{transition:none!important}
+}
+
+/* Summary */
+#summaryPanel{display:none}
+#summaryPanel.show{display:block}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+@media (max-width:720px){.summary-grid{grid-template-columns:1fr}}
+.summary-box{border-radius:14px;padding:16px 18px}
+.summary-box.duty{background:var(--accent-soft);border:1.5px solid var(--accent)}
+.summary-box.off{background:var(--teal-soft);border:1.5px solid var(--teal)}
+.summary-box h3{margin:0 0 8px;font-size:14px;font-weight:900;display:flex;align-items:center;gap:8px}
+.summary-box.duty h3{color:var(--accent-ink)}
+.summary-box.off h3{color:var(--teal)}
+.summary-box ul{margin:0;padding:0;list-style:none}
+.summary-box li{font-size:17px;font-weight:700;padding:3px 0}
+.summary-box li.detail{font-size:13px;font-weight:500;color:var(--ink-2)}
+.summary-box li.empty{font-size:14px;color:var(--ink-3);font-weight:500}
+.result-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px}
+.result-table th,.result-table td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.result-table th{color:var(--ink-3);font-size:12px;font-weight:700;letter-spacing:.05em}
+.badge{
+display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:900;white-space:nowrap;
+}
+.badge.duty{background:var(--accent);color:#fff}
+.badge.off{background:var(--teal-soft);color:var(--teal);border:1px solid var(--teal)}
+.badge.other{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+.summary-actions{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+.copied-msg{font-size:13px;color:var(--teal);font-weight:700;align-self:center}
+
+footer{color:var(--ink-3);font-size:12.5px;text-align:center;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+<div class="hero-top">
+<div class="calendar-badge" aria-hidden="true">
+<span class="dow">HOLIDAY</span>
+<span class="dnum">当番</span>
+</div>
+<div>
+<h1>休日出勤あみだくじ</h1>
+<p>休日出勤の当番を、運にまかせて公平に決めましょう。メンバーと結果を用意して線を引けば、<strong>あみだくじ</strong>が当番を決めてくれます。文句なしの一発勝負です。</p>
+</div>
+</div>
+</header>
+
+<!-- Settings -->
+<section class="panel" aria-label="設定">
+<div class="settings-grid">
+<div>
+<h2><span class="step-num">1</span>メンバー</h2>
+<p class="hint">参加する人の名前を入力してください（2〜10人）。</p>
+<div class="field-list" id="memberInputs"></div>
+<p class="dup-warn" id="dupWarn" style="display:none">同じ名前が複数あります。結果で区別できるよう、名前を変えるのがおすすめです。</p>
+<button class="btn small" id="addMemberBtn" type="button">＋ メンバーを追加</button>
+</div>
+<div>
+<h2><span class="step-num">2</span>結果を用意する</h2>
+<p class="hint">あみだの下に並ぶ結果です。並びはそのままでも、シャッフルしてもOK。</p>
+<div class="duty-control">
+<span class="label">休日出勤の当番</span>
+<div class="stepper">
+<button type="button" id="dutyMinus" aria-label="当番を減らす">−</button>
+<span class="val" aria-live="polite"><span id="dutyCountVal">1</span> <small>人</small></span>
+<button type="button" id="dutyPlus" aria-label="当番を増やす">＋</button>
+</div>
+</div>
+<div class="field-list" id="outcomeInputs"></div>
+<button class="btn small" id="shuffleOutcomesBtn" type="button">結果の並びをシャッフル</button>
+</div>
+</div>
+</section>
+
+<!-- Ladder -->
+<section class="panel" aria-label="あみだくじ">
+<div class="ladder-head">
+<div>
+<h2><span class="step-num">3</span>あみだを引く</h2>
+<p class="hint" style="margin-bottom:0">上の名前をタップすると1人ずつ線をたどります。</p>
+</div>
+<div class="actions">
+<button class="btn" id="regenBtn" type="button">あみだを作り直す</button>
+<button class="btn navy" id="resetTraceBtn" type="button">結果リセット</button>
+<button class="btn primary" id="traceAllBtn" type="button">全員いっせいにたどる</button>
+</div>
+</div>
+<div class="ladder-scroll">
+<div class="ladder-box">
+<svg class="ladder" id="ladderSvg" role="img" aria-label="あみだくじの図"></svg>
+</div>
+</div>
+<div class="status-line" id="statusLine" role="status" aria-live="polite">あみだを用意しました。名前をタップするか、「全員いっせいにたどる」を押してください。</div>
+</section>
+
+<!-- Summary -->
+<section class="panel" id="summaryPanel" aria-label="結果発表">
+<h2><span class="step-num">✓</span>結果発表</h2>
+<div class="summary-grid">
+<div class="summary-box duty">
+<h3>休日出勤の当番</h3>
+<ul id="dutyList"></ul>
+</div>
+<div class="summary-box off">
+<h3>お休み</h3>
+<ul id="offList"></ul>
+</div>
+</div>
+<table class="result-table" id="resultTable">
+<thead><tr><th>メンバー</th><th>結果</th></tr></thead>
+<tbody id="resultTbody"></tbody>
+</table>
+<div class="summary-actions">
+<button class="btn" id="copyBtn" type="button">結果をコピー</button>
+<button class="btn" id="againBtn" type="button">あみだを作り直して再戦</button>
+<span class="copied-msg" id="copiedMsg" role="status" aria-live="polite" style="display:none">コピーしました</span>
+</div>
+</section>
+
+<footer>名前や結果を変えると、あみだは自動で作り直されます。</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var COLORS = ["#e4572e","#2563eb","#0e7a6d","#b7791f","#7c3aed","#db2777","#0891b2","#4d7c0f","#dc2626","#475569"];
+var DUTY = "休日出勤";
+var OFF = "お休み";
+var OTHER_FILL = "#b7791f";
+
+var state = {
+members: ["メンバー1","メンバー2","メンバー3","メンバー4","メンバー5","メンバー6"],
+outcomes: [DUTY, OFF, OFF, OFF, OFF, OFF],
+dutyCount: 1,
+rungs: [], // rows: [[bool,...],...]
+rowsY: [],
+traced: {}, // startIdx -> endIdx
+animating: false,
+pathEls: {} // startIdx -> SVG path element
+};
+
+// Geometry
+var W = 920, TOP_Y = 78, BOTTOM_Y = 472, PAD_X = 56;
+var TOP_W = 124, BOT_W = 118; // pill widths, solved by fitView()
+var H = 560;
+
+var svg = document.getElementById("ladderSvg");
+var statusLine = document.getElementById("statusLine");
+var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- Helpers ---------- */
+function esc(s){
+return String(s == null? "": s)
+.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+function shuffleArr(arr){
+for (var i=arr.length-1;i>0;i--){
+var j = Math.floor(Math.random()*(i+1));
+var tmp = arr[i]; arr[i]=arr[j]; arr[j]=tmp;
+}
+return arr;
+}
+function memberName(i){
+var n = (state.members[i] || "").trim();
+return n || ("メンバー" + (i+1));
+}
+function outcomeName(i){
+var n = (state.outcomes[i] || "").trim();
+return n || OFF;
+}
+function xs(){
+var n = state.members.length;
+var arr = [];
+for (var i=0;i<n;i++){
+arr.push(n===1? W/2: PAD_X + (W - PAD_X*2) * (i/(n-1)));
+}
+return arr;
+}
+function getDutyMemberNames(){
+var arr = [];
+for (var i=0;i<state.members.length;i++){
+if (state.traced[i]!== undefined && outcomeName(state.traced[i]) === DUTY) arr.push(memberName(i));
+}
+return arr;
+}
+function allTraced(){
+return Object.keys(state.traced).length === state.members.length;
+}
+
+/* ---------- Timer management (prevents stale callbacks after reset/regenerate) ---------- */
+var activeTimers = [];
+function schedule(fn, ms){
+var id = setTimeout(function(){
+var i = activeTimers.indexOf(id);
+if (i > -1) activeTimers.splice(i,1);
+fn();
+}, ms);
+activeTimers.push(id);
+return id;
+}
+function clearTimers(){
+while (activeTimers.length) clearTimeout(activeTimers.pop());
+}
+
+/* ---------- Controls lock during animation ---------- */
+var memberInputs = document.getElementById("memberInputs");
+var outcomeInputs = document.getElementById("outcomeInputs");
+function setControlsLocked(locked){
+var els = document.querySelectorAll("#memberInputs input, #memberInputs button, #outcomeInputs select, #addMemberBtn, #shuffleOutcomesBtn, #dutyMinus, #dutyPlus, #regenBtn, #traceAllBtn, #againBtn");
+for (var i=0;i<els.length;i++) els[i].disabled = locked;
+if (!locked){
+syncDutyUI();
+document.getElementById("addMemberBtn").disabled = state.members.length >= 10;
+var rms = memberInputs.querySelectorAll(".remove-btn");
+for (var r=0;r<rms.length;r++) rms[r].disabled = state.members.length <= 2;
+}
+}
+
+/* ---------- Rung generation (fair: shuffled column scan + rows scale with members) ---------- */
+function rowCount(){
+return Math.max(16, state.members.length * 3);
+}
+function generateRungs(){
+var n = state.members.length;
+var ROWS = rowCount();
+var rows = [], ys = [];
+var step = (BOTTOM_Y - TOP_Y) / (ROWS + 1);
+for (var r=0;r<ROWS;r++){
+ys.push(TOP_Y + step*(r+1));
+var cols = [];
+for (var c=0;c<n-1;c++) cols.push(false);
+if (n > 1){
+// Scan columns in random order so no column position is favoured
+var cand = [];
+for (var c2=0;c2<n-1;c2++) cand.push(c2);
+shuffleArr(cand);
+cand.forEach(function(col){
+if (!cols[col-1] &&!cols[col+1] && Math.random() < 0.45) cols[col] = true;
+});
+}
+rows.push(cols);
+}
+// Guarantee at least a few rungs
+var total = 0;
+rows.forEach(function(c){ c.forEach(function(v){ if(v) total++;});});
+var target = Math.max(3, n-1);
+var guard = 0;
+while (total < target && n > 1 && guard < 300){
+guard++;
+var rr = Math.floor(Math.random()*ROWS);
+var cc = Math.floor(Math.random()*(n-1));
+if (!rows[rr][cc] &&!rows[rr][cc-1] &&!rows[rr][cc+1]){ rows[rr][cc]=true; total++;}
+}
+state.rungs = rows;
+state.rowsY = ys;
+}
+
+/* ---------- Path computation ---------- */
+function computePath(start){
+var xArr = xs();
+var col = start;
+var pts = [{x:xArr[col], y:TOP_Y}];
+for (var r=0;r<state.rungs.length;r++){
+var y = state.rowsY[r];
+pts.push({x:xArr[col], y:y});
+if (col < state.rungs[r].length && state.rungs[r][col]){
+col = col + 1;
+pts.push({x:xArr[col], y:y});
+} else if (col > 0 && state.rungs[r][col-1]){
+col = col - 1;
+pts.push({x:xArr[col], y:y});
+}
+}
+pts.push({x:xArr[col], y:BOTTOM_Y});
+return { points: pts, end: col};
+}
+function pointsToPath(pts){
+return pts.map(function(p,i){ return (i===0?"M":"L") + p.x.toFixed(1) + " " + p.y.toFixed(1);}).join(" ");
+}
+
+/* ---------- Ladder rendering ---------- */
+function outcomeFill(out){
+if (out === DUTY) return "#e4572e";
+if (out === OFF) return "#0e7a6d";
+return OTHER_FILL;
+}
+// Fit the ladder's coordinate width to the space on screen: wide on desktop,
+// compressed (never wider than the panel) on phones so nothing is cut off.
+// The first/last columns are centred at PAD_X and W-PAD_X, so PAD_X must be
+// larger than half the pill width — otherwise the edge pills spill outside
+// the viewBox and the SVG clips their outer characters (the reported bug).
+// Solve the layout from the column pitch so that can never happen: uncapped,
+// a pill is pitch-6 wide and PAD_X is half the pill plus a 6-unit margin,
+// which makes W = n * pitch + 6; wide layouts cap the pill and use PAD_X 68.
+function fitView(){
+var n = state.members.length;
+var box = svg.parentElement;
+var avail = box && box.clientWidth? box.clientWidth - 12: 920; // ladder-box side padding
+if (avail < 200) avail = 920;
+var minW = n * 84 + 6; // 84 = minimum column pitch for legible pills
+W = Math.round(Math.max(minW, Math.min(avail, 920)));
+if (n === 1){
+PAD_X = W / 2;
+TOP_W = 124; BOT_W = 118;
+} else if ((W - 136) / (n - 1) >= 130){
+PAD_X = 68;
+TOP_W = 124; BOT_W = 118;
+} else {
+var pitch = (W - 6) / n;
+TOP_W = Math.round(pitch - 6);
+BOT_W = Math.round(Math.min(118, pitch - 8));
+PAD_X = TOP_W / 2 + 6;
+}
+}
+// Shorten a pill label so the rendered text (incl. the ellipsis) stays
+// inside the pill: full-width glyphs are ~0.98em wide at these sizes.
+function fitLabel(text, pillW, fs){
+var maxW = pillW - 10;
+var charW = fs * 0.98;
+if (text.length * charW <= maxW) return text;
+var keep = Math.max(2, Math.floor(maxW / charW) - 1);
+return text.slice(0, keep) + "…";
+}
+function renderLadder(){
+var n = state.members.length;
+fitView();
+var xArr = xs();
+svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+var s = "";
+
+// vertical lines
+for (var i=0;i<n;i++){
+s += '<line x1="'+xArr[i]+'" y1="'+TOP_Y+'" x2="'+xArr[i]+'" y2="'+BOTTOM_Y+'" stroke="var(--line)" stroke-width="5" stroke-linecap="round"/>';
+s += '<line x1="'+xArr[i]+'" y1="'+TOP_Y+'" x2="'+xArr[i]+'" y2="'+BOTTOM_Y+'" stroke="#9fb0c3" stroke-width="2" stroke-linecap="round" opacity="0.55"/>';
+}
+// horizontal rungs
+for (var r=0;r<state.rungs.length;r++){
+var y = state.rowsY[r];
+for (var c=0;c<state.rungs[r].length;c++){
+if (state.rungs[r][c]){
+s += '<line x1="'+xArr[c]+'" y1="'+y+'" x2="'+xArr[c+1]+'" y2="'+y+'" stroke="#9fb0c3" stroke-width="4" stroke-linecap="round"/>';
+}
+}
+}
+// trace layer (paths injected here)
+s += '<g id="traceLayer" fill="none" stroke-linecap="round" stroke-linejoin="round"></g>';
+
+// bottom pills
+var pillW = BOT_W;
+var botFs = pillW >= 100? 14: 12.5;
+for (var b=0;b<n;b++){
+var out = outcomeName(b);
+var isDuty = out === DUTY;
+var fill = outcomeFill(out);
+var tracedHere = false;
+for (var k in state.traced){ if (state.traced[k]===b) tracedHere = true;}
+var label = fitLabel(out, pillW, botFs);
+s += '<g class="bottom-pill'+(tracedHere && isDuty? ' winner':'')+'" data-bottom="'+b+'">'
++ '<rect x="'+(xArr[b]-pillW/2)+'" y="'+(BOTTOM_Y+16)+'" width="'+pillW+'" height="36" rx="18" fill="'+fill+'"'+(tracedHere && isDuty? ' style="stroke:var(--ink)" stroke-width="3"':'')+' opacity="'+(tracedHere?1:0.88)+'"/>'
++ '<text x="'+xArr[b]+'" y="'+(BOTTOM_Y+39)+'" text-anchor="middle" font-size="'+botFs+'" fill="#ffffff">'+esc(label)+'</text>'
++ '</g>';
+}
+
+// top pills (clickable)
+var topW = TOP_W;
+var topFs = topW >= 100? 15: 13.5;
+for (var t=0;t<n;t++){
+var done = state.traced.hasOwnProperty(t);
+var name = memberName(t);
+var tlabel = fitLabel(name, topW, topFs);
+s += '<g class="top-pill'+(done?' done':'')+'" data-start="'+t+'" role="button" aria-label="'+esc(name)+'のあみだをたどる" tabindex="0">'
++ '<rect x="'+(xArr[t]-topW/2)+'" y="14" width="'+topW+'" height="44" rx="12" fill="'+COLORS[t%COLORS.length]+'"/>'
++ '<text x="'+xArr[t]+'" y="42" text-anchor="middle" font-size="'+topFs+'" font-weight="700" fill="#ffffff">'+esc(tlabel)+'</text>'
++ '<circle cx="'+xArr[t]+'" cy="'+TOP_Y+'" r="6" fill="'+COLORS[t%COLORS.length]+'" stroke="#fff" stroke-width="2"/>'
++ '</g>';
+}
+
+svg.innerHTML = s;
+state.pathEls = {};
+
+// attach handlers
+var pills = svg.querySelectorAll(".top-pill");
+for (var p=0;p<pills.length;p++){
+(function(el){
+var idx = parseInt(el.getAttribute("data-start"),10);
+el.addEventListener("click", function(){ traceOne(idx);});
+el.addEventListener("keydown", function(e){
+if (e.key==="Enter" || e.key===" "){ e.preventDefault(); traceOne(idx);}
+});
+el.addEventListener("mouseenter", function(){ highlightPath(idx, true);});
+el.addEventListener("mouseleave", function(){ highlightPath(idx, false);});
+el.addEventListener("focus", function(){ highlightPath(idx, true);});
+el.addEventListener("blur", function(){ highlightPath(idx, false);});
+})(pills[p]);
+}
+}
+
+// Hover/focus on a name brings that member's traced path to the front
+function highlightPath(idx, on){
+var layer = svg.querySelector("#traceLayer");
+if (!layer) return;
+var mine = state.pathEls[idx];
+var paths = layer.querySelectorAll("path");
+for (var i=0;i<paths.length;i++){
+if (on){
+paths[i].style.opacity = (paths[i] === mine)? "1": "0.15";
+paths[i].setAttribute("stroke-width", paths[i] === mine? "7": "5");
+} else {
+paths[i].style.opacity = "0.92";
+paths[i].setAttribute("stroke-width", "5");
+}
+}
+if (on && mine) layer.appendChild(mine);
+}
+
+/* ---------- Inputs rendering ---------- */
+function checkDuplicates(){
+var seen = {}, dup = false;
+state.members.forEach(function(m){
+var nm = (m || "").trim();
+if (!nm) return;
+if (seen[nm]) dup = true;
+seen[nm] = true;
+});
+var w = document.getElementById("dupWarn");
+if (w) w.style.display = dup? "block": "none";
+}
+
+function renderInputs(){
+// members
+memberInputs.innerHTML = "";
+state.members.forEach(function(m, i){
+var row = document.createElement("div");
+row.className = "field-row";
+var dot = document.createElement("span");
+dot.className = "dot";
+dot.style.background = COLORS[i%COLORS.length];
+row.appendChild(dot);
+var input = document.createElement("input");
+input.type = "text"; input.value = m; input.maxLength = 20;
+input.placeholder = "メンバー" + (i+1);
+input.setAttribute("aria-label", (i+1) + "人目の名前");
+input.addEventListener("input", function(){
+if (state.animating) return;
+state.members[i] = input.value;
+renderLadder();
+restoreTraces(false);
+if (allTraced()) showSummary();
+checkDuplicates();
+});
+var rm = document.createElement("button");
+rm.type = "button"; rm.className = "remove-btn"; rm.textContent = "×";
+rm.setAttribute("aria-label", (i+1) + "人目のメンバーを削除");
+rm.disabled = state.members.length <= 2;
+rm.addEventListener("click", function(){
+if (state.animating) return;
+state.members.splice(i,1);
+state.outcomes.splice(i,1);
+recountDuty(); // re-count from actual outcomes so the stepper never drifts
+onStructureChange();
+});
+row.appendChild(input); row.appendChild(rm);
+memberInputs.appendChild(row);
+});
+document.getElementById("addMemberBtn").disabled = state.members.length >= 10;
+checkDuplicates();
+
+// outcomes
+outcomeInputs.innerHTML = "";
+state.outcomes.forEach(function(o, i){
+var row = document.createElement("div");
+row.className = "field-row";
+var sel = document.createElement("select");
+sel.setAttribute("aria-label", (i+1) + "番目の結果");
+var opts = [DUTY, OFF, "午前のみ出勤", "午後から出勤", "リモート対応", "電話番"];
+if (opts.indexOf(o) === -1 && o) opts.push(o);
+opts.forEach(function(op){
+var el = document.createElement("option");
+el.value = op; el.textContent = op;
+if (op === o) el.selected = true;
+sel.appendChild(el);
+});
+sel.addEventListener("change", function(){
+if (state.animating) return;
+state.outcomes[i] = sel.value;
+recountDuty();
+if (Object.keys(state.traced).length){
+// Changing a result after tracing would invalidate the draw: rebuild instead
+onStructureChange(false);
+setStatus("結果を変えたので、あみだを作り直しました。もう一度たどってください。", false);
+} else {
+renderLadder();
+}
+});
+row.appendChild(sel);
+outcomeInputs.appendChild(row);
+});
+}
+
+function recountDuty(){
+var c = 0;
+state.outcomes.forEach(function(o){ if (o===DUTY) c++;});
+state.dutyCount = c;
+syncDutyUI();
+}
+function syncDutyUI(){
+document.getElementById("dutyCountVal").textContent = state.dutyCount;
+document.getElementById("dutyMinus").disabled = state.dutyCount <= 0;
+document.getElementById("dutyPlus").disabled = state.dutyCount >= state.members.length;
+}
+function applyDutyCount(newCount){
+state.dutyCount = Math.max(0, Math.min(state.members.length, newCount));
+var arr = [];
+for (var i=0;i<state.members.length;i++) arr.push(i < state.dutyCount? DUTY: OFF);
+shuffleArr(arr); // scatter duty slots so position never favours anyone
+state.outcomes = arr;
+syncDutyUI();
+renderInputs();
+onStructureChange(false);
+}
+
+function onStructureChange(regenInputs){
+clearTimers();
+state.animating = false;
+state.traced = {};
+if (regenInputs!== false) renderInputs();
+generateRungs();
+renderLadder();
+hideSummary();
+setControlsLocked(false);
+setStatus("あみだを作り直しました。名前をタップするか、「全員いっせいにたどる」を押してください。", false);
+}
+
+/* ---------- Status & summary ---------- */
+function setStatus(msg, busy){
+// Built with DOM APIs (no innerHTML) so status text can never inject markup
+statusLine.textContent = "";
+if (busy){
+var pulse = document.createElement("span");
+pulse.className = "pulse";
+statusLine.appendChild(pulse);
+}
+statusLine.appendChild(document.createTextNode(msg));
+}
+function hideSummary(){
+document.getElementById("summaryPanel").classList.remove("show");
+}
+function showSummary(){
+var dutyList = document.getElementById("dutyList");
+var offList = document.getElementById("offList");
+var tbody = document.getElementById("resultTbody");
+dutyList.innerHTML = ""; offList.innerHTML = ""; tbody.innerHTML = "";
+var dutyNames = [], offNames = [], otherEntries = [];
+for (var i=0;i<state.members.length;i++){
+var end = state.traced[i];
+if (end === undefined) continue;
+var out = outcomeName(end);
+var isDuty = out === DUTY;
+var isOff = out === OFF;
+if (isDuty) dutyNames.push(memberName(i));
+else if (isOff) offNames.push(memberName(i));
+else otherEntries.push({ name: memberName(i), out: out});
+
+var tr = document.createElement("tr");
+var td1 = document.createElement("td");
+var dotSpan = document.createElement("span");
+dotSpan.style.cssText = "display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;background:" + COLORS[i%COLORS.length];
+var strong = document.createElement("strong");
+strong.textContent = memberName(i);
+td1.appendChild(dotSpan); td1.appendChild(strong);
+var td2 = document.createElement("td");
+var badge = document.createElement("span");
+badge.className = "badge " + (isDuty? "duty": (isOff? "off": "other"));
+badge.textContent = out;
+td2.appendChild(badge);
+tr.appendChild(td1); tr.appendChild(td2);
+tbody.appendChild(tr);
+}
+dutyNames.forEach(function(nm){
+var li = document.createElement("li");
+li.textContent = nm + " さん";
+dutyList.appendChild(li);
+});
+otherEntries.forEach(function(e){
+var li = document.createElement("li");
+li.className = "detail";
+li.textContent = e.name + " さん（" + e.out + "）";
+dutyList.appendChild(li);
+});
+if (!dutyNames.length &&!otherEntries.length){
+var liE = document.createElement("li");
+liE.className = "empty";
+liE.textContent = "今回は当番なしです";
+dutyList.appendChild(liE);
+}
+if (offNames.length){
+offNames.forEach(function(nm){
+var li = document.createElement("li");
+li.textContent = nm + " さん";
+offList.appendChild(li);
+});
+} else {
+var liO = document.createElement("li");
+liO.className = "empty";
+liO.textContent = "—";
+offList.appendChild(liO);
+}
+document.getElementById("summaryPanel").classList.add("show");
+}
+
+/* ---------- Tracing ---------- */
+function drawPath(idx, animate, done){
+var layer = svg.querySelector("#traceLayer");
+if (!layer){ if (done) done(computePath(idx).end); return;}
+var result = computePath(idx);
+var d = pointsToPath(result.points);
+var path = document.createElementNS("http://www.w3.org/2000/svg","path");
+path.setAttribute("d", d);
+path.setAttribute("stroke", COLORS[idx % COLORS.length]);
+path.setAttribute("stroke-width", "5");
+path.setAttribute("opacity", "0.92");
+layer.appendChild(path);
+state.pathEls[idx] = path;
+state.traced[idx] = result.end;
+
+// end dot
+var xArr = xs();
+var dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
+dot.setAttribute("cx", xArr[result.end]);
+dot.setAttribute("cy", BOTTOM_Y);
+dot.setAttribute("r", "8");
+dot.setAttribute("fill", COLORS[idx % COLORS.length]);
+dot.setAttribute("stroke", "#fff");
+dot.setAttribute("stroke-width", "2.5");
+layer.appendChild(dot);
+
+if (animate &&!reduceMotion){
+var len = path.getTotalLength();
+path.style.strokeDasharray = len;
+path.style.strokeDashoffset = len;
+// force reflow
+void path.getBoundingClientRect();
+path.style.transition = "stroke-dashoffset 1.15s ease-in-out";
+path.style.strokeDashoffset = "0";
+dot.style.opacity = "0";
+schedule(function(){ dot.style.transition = "opacity .2s"; dot.style.opacity = "1";}, 1120);
+schedule(function(){ if (done) done(result.end);}, 1250);
+} else {
+// done fires exactly once here; callers must not schedule it again
+if (done) done(result.end);
+}
+}
+
+// Update only the affected pills so keyboard focus is never lost
+function updatePills(idx, end){
+var top = svg.querySelector('.top-pill[data-start="' + idx + '"]');
+if (top) top.classList.add("done");
+var bp = svg.querySelector('.bottom-pill[data-bottom="' + end + '"]');
+if (bp){
+var rect = bp.querySelector("rect");
+if (rect){
+rect.setAttribute("opacity", "1");
+if (outcomeName(end) === DUTY){
+bp.classList.add("winner");
+rect.style.stroke = "var(--ink)";
+rect.setAttribute("stroke-width", "3");
+}
+}
+}
+}
+
+function afterTrace(idx, end){
+updatePills(idx, end);
+var out = outcomeName(end);
+if (out === DUTY){
+setStatus(memberName(idx) + " さんは…「" + out + "」です。当番、よろしくお願いします！", false);
+} else {
+setStatus(memberName(idx) + " さんは…「" + out + "」です。", false);
+}
+if (allTraced()){
+showSummary();
+var dutyPeople = getDutyMemberNames();
+if (dutyPeople.length){
+setStatus("結果発表！ 休日出勤の当番は " + dutyPeople.join(" さん、") + " さんです。お疲れさまです！", false);
+} else {
+setStatus("全員の結果が出そろいました。", false);
+}
+}
+}
+
+function traceOne(idx){
+if (state.animating) return;
+if (state.traced.hasOwnProperty(idx)) return;
+state.animating = true;
+setControlsLocked(true);
+setStatus(memberName(idx) + " さんのあみだをたどっています…", true);
+drawPath(idx, true, function(end){
+state.animating = false;
+setControlsLocked(false);
+afterTrace(idx, end);
+});
+}
+
+function restoreTraces(animate){
+// After a re-render caused by typing, keep existing traces visible (instant)
+var copy = {};
+for (var k in state.traced) copy[k] = state.traced[k];
+if (!Object.keys(copy).length) return;
+state.traced = {};
+Object.keys(copy).forEach(function(key){ drawPath(parseInt(key,10), false, null);});
+state.traced = copy;
+}
+
+function traceAll(){
+if (state.animating) return;
+var remaining = [];
+for (var i=0;i<state.members.length;i++){
+if (!state.traced.hasOwnProperty(i)) remaining.push(i);
+}
+if (!remaining.length) return;
+state.animating = true;
+setControlsLocked(true);
+setStatus("全員のあみだをたどっています…", true);
+// Staggered parallel traces: everyone finishes in about 2.5s total
+var completed = 0;
+var lastIdx = remaining[remaining.length-1], lastEnd = null;
+remaining.forEach(function(idx, order){
+schedule(function(){
+drawPath(idx, true, function(end){
+updatePills(idx, end);
+completed++;
+lastIdx = idx; lastEnd = end;
+if (completed === remaining.length){
+state.animating = false;
+setControlsLocked(false);
+afterTrace(lastIdx, lastEnd);
+}
+});
+}, reduceMotion? 0: order * 160);
+});
+}
+
+function resetTraces(){
+clearTimers();
+state.animating = false;
+state.traced = {};
+renderLadder();
+hideSummary();
+setControlsLocked(false);
+setStatus("結果をリセットしました。もう一度たどれます。", false);
+}
+
+/* ---------- Wiring ---------- */
+document.getElementById("addMemberBtn").addEventListener("click", function(){
+if (state.animating || state.members.length >= 10) return;
+state.members.push("");
+state.outcomes.push(OFF);
+syncDutyUI();
+onStructureChange();
+// focus new input
+var inputs = memberInputs.querySelectorAll("input");
+if (inputs.length) inputs[inputs.length-1].focus();
+});
+document.getElementById("dutyMinus").addEventListener("click", function(){ if(!state.animating) applyDutyCount(state.dutyCount - 1);});
+document.getElementById("dutyPlus").addEventListener("click", function(){ if(!state.animating) applyDutyCount(state.dutyCount + 1);});
+document.getElementById("shuffleOutcomesBtn").addEventListener("click", function(){
+if (state.animating) return;
+shuffleArr(state.outcomes);
+onStructureChange();
+});
+document.getElementById("regenBtn").addEventListener("click", function(){ onStructureChange(false);});
+document.getElementById("resetTraceBtn").addEventListener("click", resetTraces);
+document.getElementById("traceAllBtn").addEventListener("click", traceAll);
+document.getElementById("againBtn").addEventListener("click", function(){
+onStructureChange(false);
+window.scrollTo({top:0, behavior:"smooth"});
+});
+document.getElementById("copyBtn").addEventListener("click", function(){
+var lines = ["【休日出勤あみだくじ 結果】"];
+for (var i=0;i<state.members.length;i++){
+var end = state.traced[i];
+if (end === undefined) continue;
+lines.push(memberName(i) + "： " + outcomeName(end));
+}
+var dutyPeople = getDutyMemberNames();
+if (dutyPeople.length) lines.push("当番：" + dutyPeople.join("、"));
+var text = lines.join("\n");
+var msg = document.getElementById("copiedMsg");
+function showMsg(){ msg.style.display="inline"; setTimeout(function(){ msg.style.display="none";}, 2200);}
+if (navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(text).then(showMsg).catch(function(){ fallbackCopy(text); showMsg();});
+} else { fallbackCopy(text); showMsg();}
+});
+function fallbackCopy(text){
+var ta = document.createElement("textarea");
+ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+document.body.appendChild(ta); ta.select();
+try { document.execCommand("copy");} catch(e){}
+document.body.removeChild(ta);
+}
+
+// Refit the ladder when the viewport changes (rotation, window resize)
+var resizeTimer = null;
+window.addEventListener("resize", function(){
+if (state.animating) return;
+if (resizeTimer) clearTimeout(resizeTimer);
+resizeTimer = setTimeout(function(){
+renderLadder();
+restoreTraces(false);
+if (allTraced()) showSummary();
+}, 150);
+});
+
+/* ---------- Init ---------- */
+shuffleArr(state.outcomes); // initial duty slot is random, not always leftmost
+syncDutyUI();
+renderInputs();
+generateRungs();
+renderLadder();
+})();
+</script>
+</body>
+</html>
